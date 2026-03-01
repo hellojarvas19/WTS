@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import express, { Express, Request, Response } from 'express'
 import cors from 'cors'
 import { createServer } from 'http'
-import { WebSocketServer, WebSocket } from 'ws'
+import WebSocket from 'ws'
 import { PrismaClient } from '@prisma/client'
 import { Connection, PublicKey } from '@solana/web3.js'
 import { RpcConnectionManager } from '../providers/solana'
@@ -33,13 +33,13 @@ interface WSClient extends WebSocket {
 export class ApiServer {
   public app: Express
   public httpServer: ReturnType<typeof createServer>
-  public wss: WebSocketServer
+  public wss: WebSocket.Server
   private clients: Map<string, WSClient> = new Map()
 
   constructor() {
     this.app = express()
     this.httpServer = createServer(this.app)
-    this.wss = new WebSocketServer({ 
+    this.wss = new WebSocket.Server({ 
       server: this.httpServer,
       path: '/ws'
     })
@@ -225,7 +225,7 @@ export class ApiServer {
         const publicKey = new PublicKey(address)
         
         const balance = await connection.getBalance(publicKey)
-        const solPrice = CronJobs.getSolPrice()
+        const solPrice = CronJobs.getSolPrice() || 0
         
         res.json({
           lamports: balance,
@@ -291,29 +291,30 @@ export class ApiServer {
   // ═══════════════════════════════════════════════════════════════════════════════
 
   private setupWebSocket(): void {
-    this.wss.on('connection', (ws: WSClient, req) => {
+    this.wss.on('connection', (ws: WebSocket) => {
+      const client = ws as WSClient
       const clientId = Math.random().toString(36).substring(2, 15)
-      ws.id = clientId
-      ws.subscriptions = new Set()
+      client.id = clientId
+      client.subscriptions = new Set()
       
-      this.clients.set(clientId, ws)
+      this.clients.set(clientId, client)
       console.log(chalk.cyan(`WebSocket client connected: ${clientId}`))
       console.log(chalk.gray(`Total connections: ${this.clients.size}`))
 
       // Send welcome message
-      this.sendToClient(ws, {
+      this.sendToClient(client, {
         type: 'connected',
         data: { clientId, timestamp: Date.now() },
       })
 
       // Handle messages
-      ws.on('message', (data: Buffer) => {
+      client.on('message', (data: Buffer) => {
         try {
           const message = JSON.parse(data.toString())
-          this.handleWebSocketMessage(ws, message)
+          this.handleWebSocketMessage(client, message)
         } catch (error) {
           console.error('Error parsing WebSocket message:', error)
-          this.sendToClient(ws, {
+          this.sendToClient(client, {
             type: 'error',
             data: { message: 'Invalid message format' },
           })
@@ -321,14 +322,14 @@ export class ApiServer {
       })
 
       // Handle disconnection
-      ws.on('close', () => {
+      client.on('close', () => {
         this.clients.delete(clientId)
         console.log(chalk.red(`WebSocket client disconnected: ${clientId}`))
         console.log(chalk.gray(`Total connections: ${this.clients.size}`))
       })
 
       // Handle errors
-      ws.on('error', (error) => {
+      client.on('error', (error: Error) => {
         console.error(`WebSocket error for client ${clientId}:`, error)
       })
     })

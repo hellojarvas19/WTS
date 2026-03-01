@@ -17,7 +17,7 @@ import { apiServer } from './api/server'
 
 dotenv.config()
 
-const PORT = process.env.PORT || 3001
+const PORT = parseInt(process.env.PORT || '3001', 10)
 
 class Main {
   private trackWallets: TrackWallets
