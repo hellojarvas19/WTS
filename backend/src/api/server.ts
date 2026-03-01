@@ -225,7 +225,7 @@ export class ApiServer {
         const publicKey = new PublicKey(address)
         
         const balance = await connection.getBalance(publicKey)
-        const solPrice = CronJobs.getSolPrice() || 0
+        const solPrice = parseFloat(CronJobs.getSolPrice() || '0')
         
         res.json({
           lamports: balance,
