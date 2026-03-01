@@ -1,0 +1,187 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   SOLANA TRACKER - 3D Glassmorphism App Styles
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* Root container */
+#root {
+  min-height: 100vh;
+  background: #000000;
+}
+
+/* Selection styling */
+::selection {
+  background: rgba(180, 180, 200, 0.3);
+  color: white;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid rgba(180, 180, 200, 0.5);
+  outline-offset: 2px;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom cursor for interactive elements */
+button, a, [role="button"] {
+  cursor: pointer;
+}
+
+/* Prevent text selection on interactive elements */
+button, [role="button"] {
+  user-select: none;
+}
+
+/* Loading animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.loading-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Gradient text utility */
+.gradient-text-plasma {
+  background: linear-gradient(135deg, #e8e8f0 0%, #a0a0b0 50%, #e8e8f0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Radial gradient background */
+.bg-gradient-radial {
+  background: radial-gradient(circle at center, var(--tw-gradient-from), var(--tw-gradient-to));
+}
+
+/* Plasma color utilities */
+.text-plasma-50 { color: hsl(var(--plasma-50)); }
+.text-plasma-100 { color: hsl(var(--plasma-100)); }
+.text-plasma-200 { color: hsl(var(--plasma-200)); }
+.text-plasma-300 { color: hsl(var(--plasma-300)); }
+.text-plasma-400 { color: hsl(var(--plasma-400)); }
+.text-plasma-500 { color: hsl(var(--plasma-500)); }
+.text-plasma-600 { color: hsl(var(--plasma-600)); }
+.text-plasma-700 { color: hsl(var(--plasma-700)); }
+.text-plasma-800 { color: hsl(var(--plasma-800)); }
+.text-plasma-900 { color: hsl(var(--plasma-900)); }
+
+.bg-plasma-50 { background-color: hsl(var(--plasma-50)); }
+.bg-plasma-100 { background-color: hsl(var(--plasma-100)); }
+.bg-plasma-200 { background-color: hsl(var(--plasma-200)); }
+.bg-plasma-300 { background-color: hsl(var(--plasma-300)); }
+.bg-plasma-400 { background-color: hsl(var(--plasma-400)); }
+.bg-plasma-500 { background-color: hsl(var(--plasma-500)); }
+.bg-plasma-600 { background-color: hsl(var(--plasma-600)); }
+.bg-plasma-700 { background-color: hsl(var(--plasma-700)); }
+.bg-plasma-800 { background-color: hsl(var(--plasma-800)); }
+.bg-plasma-900 { background-color: hsl(var(--plasma-900)); }
+
+/* Animation delays for staggered effects */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+/* Hover lift effect */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Glass card variants */
+.glass-card-primary {
+  background: rgba(20, 20, 30, 0.7);
+  backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(180, 180, 200, 0.15);
+}
+
+.glass-card-subtle {
+  background: rgba(10, 10, 15, 0.4);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Neon border animation */
+@keyframes neon-border {
+  0%, 100% {
+    border-color: rgba(180, 180, 200, 0.1);
+  }
+  50% {
+    border-color: rgba(180, 180, 200, 0.3);
+  }
+}
+
+.neon-border-animated {
+  animation: neon-border 3s ease-in-out infinite;
+}
+
+/* Status indicator pulse */
+.status-pulse {
+  position: relative;
+}
+
+.status-pulse::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.3);
+  animation: statusPulse 2s ease-out infinite;
+}
+
+@keyframes statusPulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Card stack effect */
+.card-stack {
+  position: relative;
+}
+
+.card-stack::before,
+.card-stack::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  z-index: -1;
+}
+
+.card-stack::before {
+  transform: translateY(8px) scale(0.98);
+  opacity: 0.5;
+}
+
+.card-stack::after {
+  transform: translateY(16px) scale(0.96);
+  opacity: 0.25;
+}

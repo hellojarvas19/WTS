@@ -1,0 +1,80 @@
+📁 Files Changed - Notification Settings Feature
+
+NEW FILES (6):
+├── src/repositories/prisma/notification-settings.ts
+├── prisma/migrations/20260225131500_add_notification_settings/migration.sql
+├── NOTIFICATION_SETTINGS.md
+├── IMPLEMENTATION_SUMMARY.md
+├── DEPLOYMENT_CHECKLIST.md
+└── CHANGES.md
+
+MODIFIED FILES (7):
+├── prisma/schema.prisma
+│   └── Added NotificationSettings model + User relation
+├── src/config/bot-menus.ts
+│   └── Added NOTIFICATION_FILTERS_MENU, DEX_FILTERS_MENU
+├── src/bot/commands/settings-command.ts
+│   └── Added 4 new handler methods
+├── src/bot/handlers/callback-query-handler.ts
+│   └── Added 8 new callback cases
+├── src/bot/handlers/send-tx-msg-handler.ts
+│   └── Added filtering logic (shouldSendNotification)
+├── README.md
+│   └── Added Notification Settings section
+└── tasks.txt
+    └── Marked all tasks complete
+
+TOTAL: 13 files (6 new, 7 modified)
+
+KEY CHANGES BY FILE:
+
+prisma/schema.prisma
+  + NotificationSettings model (9 fields)
+  + User.notificationSettings relation
+
+src/repositories/prisma/notification-settings.ts
+  + PrismaNotificationSettingsRepository class
+  + getSettings() method
+  + toggleDex() method
+  + setMinSolAmount() method
+
+src/config/bot-menus.ts
+  + NOTIFICATION_FILTERS_MENU constant
+  + DEX_FILTERS_MENU() function
+  + Updated USER_SETTINGS_MENU
+
+src/bot/commands/settings-command.ts
+  + notificationFiltersHandler()
+  + dexFiltersHandler()
+  + toggleDexHandler()
+  + minSolAmountHandler()
+
+src/bot/handlers/callback-query-handler.ts
+  + notification_filters case
+  + dex_filters case
+  + toggle_pumpfun case
+  + toggle_pumpswap case
+  + toggle_raydium case
+  + toggle_jupiter case
+  + toggle_sol_transfers case
+  + min_sol_amount case
+
+src/bot/handlers/send-tx-msg-handler.ts
+  + shouldSendNotification() method
+  + shouldSendTransferNotification() method
+  + Filter checks in sendTransactionMessage()
+  + Filter checks in sendTransferMessage()
+
+prisma/migrations/20260225131500_add_notification_settings/migration.sql
+  + CREATE TABLE NotificationSettings
+  + CREATE UNIQUE INDEX on userId
+  + CREATE INDEX on userId
+  + ADD FOREIGN KEY to User
+
+LINES OF CODE ADDED: ~350
+LINES OF CODE MODIFIED: ~50
+TOTAL IMPACT: ~400 lines
+
+COMPLEXITY: Medium
+RISK LEVEL: Low (backward compatible)
+TESTING REQUIRED: Yes (manual)
